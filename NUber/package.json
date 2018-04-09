@@ -1,0 +1,30 @@
+{
+  "name": "nuber",
+  "version": "1.0.0",
+  "description": "NUber API by The Brotherhood of Mutants",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CS-3398-264/BrotherHoodOfMutantsRepo.git"
+  },
+  "keywords": [
+    "NUber",
+    "Rideshare"
+  ],
+  "author": "BOM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CS-3398-264/BrotherHoodOfMutantsRepo/issues"
+  },
+  "homepage": "https://github.com/CS-3398-264/BrotherHoodOfMutantsRepo#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "enum": "^2.5.0",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.14"
+  }
+}
