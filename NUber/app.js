@@ -19,16 +19,15 @@ app.get('/', function (req, res) {
     res.send(message);
 });
 
-// Uncomment "xxxxController after scheme has been created.
-
 
 var UserController = require('./user/UserController'); // Define UserController path
 app.use('/users', UserController);                     // Define URL for UserController
 
 // var AdminController = require('./admin/AdminController');
-// app.use('/users', AdminController);
+// app.use('/admins', AdminController);
 //
-// var DriverController = require('./driver/DriverController');
-// app.use('/users', DriverController);
+
+var DriverController = require('./driver/DriverController');
+app.use('/drivers', DriverController);
 
 module.exports = app;

@@ -3,7 +3,7 @@
 //
 var express = require('express');                       // #include express
 var bodyParser = require('body-parser');                // #include body-parser
-var User = require('./User');                           // #include user object (user.js)
+var User = require('./User');                           // #include user object (User.js)
 var router = express.Router();                          // Get a new express router
 router.use(bodyParser.urlencoded({ extended: true }));
 
