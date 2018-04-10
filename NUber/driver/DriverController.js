@@ -15,7 +15,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //
 // CREATES A NEW USER
 //
-router.post('/', function (req, res) {
+/*router.post('/', function (req, res) {
     Driver.create({
             status: req.body.status,
             driver_type: req.body.driver_type,
@@ -38,7 +38,7 @@ router.post('/', function (req, res) {
             res.status(200).send(driver);
         });
 });
-
+*/
 //
 // RETURNS ALL THE DRIVER IN THE DATABASE
 //
@@ -64,6 +64,7 @@ router.get('/:id', function (req, res) {
 //
 // DELETE SPECIFIC DRIVER IN THE DATABASE
 //
+/*
 router.delete('/:id', function(req,res){
 
     Driver.findByIdAndRemove(req.params.id, function(err,driver){
@@ -73,7 +74,7 @@ router.delete('/:id', function(req,res){
     });
 
 });
-
+*/
 //
 // UPDATE SPECIFIC DRIVER IN THE DATABASE
 //
