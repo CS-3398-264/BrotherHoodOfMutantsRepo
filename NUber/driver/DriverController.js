@@ -17,6 +17,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //
 router.post('/', function (req, res) {
     Driver.create({
+            status: req.body.status,
             driver_type: req.body.driver_type,
             service_type: req.body.service_type,
             concierge_type: req.body.concierge_type,
