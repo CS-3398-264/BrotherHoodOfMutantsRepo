@@ -2,29 +2,23 @@
 // Driver.js
 //
 var mongoose = require('mongoose'); // #include mongoose
-const driverType = ['Amateur', 'Baby Driver', 'Chauffeur','Betty White'];
-const serviceType = ['NUber X', 'NUber XL', 'NUber SELECT', 'NUber BLACK', 'NUber SUV', 'NUber LUX'];
-const conciergeType = ['None','Hunk', 'Hottie', 'Average Joe','Average Jane','Below Average Jones'];
-const status = ['Available', 'Unavailable'];
 
-
-// Define user Schema
+// Define driver Schema
 var DriverSchema = new mongoose.Schema({
-    status:{type: String, enum: status, default: 'Available'},
-    driver_type:{type: String, enum: driverType, default: 'Amateur'},
-    service_type:{type: String, enum: serviceType, default: 'NUber X'},
-    concierge_type:{type: String, enum: conciergeType, default: 'None'},
+    status:{
+        type: String,
+        default: 'available'
+    },
+    driver_type:{type: String, default: 'amateur'},
+    service_type:{
+        type: String,
+        default: 'nuberx'
+    },
     username: String,
-    firstName: String,
-    lastName: String,
     email: String,
     password: String,
-    curr_address: String,
-    curr_latitude: String,
-    curr_longitude: String,
-    dest_address: String,
-    dest_latitude: String,
-    dest_longitude: String
+    current_lat: String,
+    current_long: String
 });
 
 mongoose.model('Driver', DriverSchema);

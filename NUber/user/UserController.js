@@ -18,16 +18,10 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.post('/', function (req, res) {
     User.create({
             username : req.body.username,
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,
             email : req.body.email,
             password : req.body.password,
-            curr_address : req.body.curr_address,
-            curr_latitude : req.body.curr_latitude,
-            curr_longitude : req.body.curr_longitude,
-            dest_address : req.body.dest_address,
-            dest_latitude : req.body.dest_latitude,
-            dest_longitude : req.body.dest_longitude
+            current_address: req.body.current_address,
+            destination_address: req.body.destination_address
         },
         function (err, user) {
             if (err) return res.status(500).send("There was a problem adding the "+ user.username +" to the database.");
@@ -40,7 +34,6 @@ router.post('/', function (req, res) {
 //
 router.get('/', function (req, res) {
     User.find({}, function (error, users) {
-        console.log("Error: " + error);
         if (error) return res.status(500).send("There was a problem retrieving all NUber users.");
         res.status(200).send("The users of the NUber Network are:\n\n" + users);
     });
