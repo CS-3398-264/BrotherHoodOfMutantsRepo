@@ -73,6 +73,7 @@ router.get('/dt/:driver_type', function (req, res) {
         res.status(200).send("The NUber network has the following "+req.params.driver_type+" style drivers:\n\n" + drivers);
     });
 });
+
 //////////////////////////////
 // DELETE
 /////////////////////////////
@@ -103,7 +104,7 @@ router.put('/id/:id', function(req,res){
 
 });
 
-// UPDATE SPECIFIC STATUS OF DRIVER IN THE DATABASE
+// UPDATE STATUS OF SPECIFIC DRIVER IN THE DATABASE
 router.put('/id/:id/status/:status', function(req,res){
 
     Driver.findByIdAndUpdate(req.params.id, { status: req.params.status }, {new: true}, function(err,driver){
