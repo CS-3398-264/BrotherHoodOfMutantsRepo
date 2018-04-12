@@ -74,6 +74,22 @@ router.get('/dt/:driver_type', function (req, res) {
     });
 });
 
+// // UPDATE STATUS OF SPECIFIC DRIVER IN THE DATABASE
+// router.put('/all/:lat@:long/distance/:distance', function(req,res){
+//
+//     Driver.find({}, function(err,drivers){
+//         if(err) return res.status(500).send("There was an error updating the information.");
+//         var driver;
+//
+//         for (driver in drivers){
+//             get(req.param.lat, req.param.long, driver.current_lat, driver.current_long);
+//         }
+//
+//         res.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
+//     });
+//
+// });
+
 //////////////////////////////
 // DELETE
 /////////////////////////////
@@ -115,5 +131,13 @@ router.put('/id/:id/status/:status', function(req,res){
 
 });
 
+
+
+//////////////////////////////
+// HELPER FUNCTIONS
+/////////////////////////////
+function getDistance(customer_lat, customer_long, drive_lat, driver_long){
+    // Calculate the distance between customer's lat long and driver's lat long. Ask Jeremy! 
+}
 
 module.exports = router;
