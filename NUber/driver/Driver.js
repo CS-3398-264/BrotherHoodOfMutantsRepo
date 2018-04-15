@@ -14,7 +14,7 @@ var DriverSchema = new mongoose.Schema({
     email: String,
     latitude: Number,
     longitude: Number,
-    serviceType: [{type: mongoose.Schema.ObjectId, ref: 'ServiceType'}],
+    //serviceType: [{type: mongoose.Schema.ObjectId, ref: 'ServiceType'}],
     driverType: {type: String, enum: driverType, default: 'amateur'}
 });
 mongoose.model('Driver', DriverSchema);

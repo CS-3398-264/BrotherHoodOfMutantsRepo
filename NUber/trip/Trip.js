@@ -11,7 +11,7 @@ var TripSchema = new mongoose.Schema({
     driverID: String,
     tripDuration: Number,
     tripDirectionsURL: String,
-    conciergeType: [{type: mongoose.Schema.ObjectId, ref: 'ConciergeType'}]
+    //conciergeType: [{type: mongoose.Schema.ObjectId, ref: 'ConciergeType'}]
 },{
     // FUNCTION: timestamps - (true) gives access to trip.createdat and trip.updatedat
     // REFERENCE: http://mongoosejs.com/docs/guide.html#timestamps

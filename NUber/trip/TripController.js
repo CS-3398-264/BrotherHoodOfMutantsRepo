@@ -20,7 +20,7 @@ router.post('/', function(request, response){
           driverID: request.body.driverID,
           tripDuration: request.body.tripDuration,
           tripDirectionsURL: request.body.tripDirectionsURL,
-          conciergeType: request.body.conciergeType
+          //conciergeType: request.body.conciergeType
   },
   function(error, trip){
     if(error) return response.status(500).send("Error creating trip in the NUber Network.");
