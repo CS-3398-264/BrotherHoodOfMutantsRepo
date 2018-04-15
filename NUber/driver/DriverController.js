@@ -4,6 +4,7 @@
 var express = require('express');                       // #include express
 var bodyParser = require('body-parser');                // #include body-parser
 var Driver = require('./Driver');                        // #include user object (Driver.js)
+var url = require('url');
 var router = express.Router();                          // Get a new express router
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -12,26 +13,25 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // DRIVER CONTROLLER FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 //////////////////////////////
 // POST
 /////////////////////////////
 
-// CREATES A NEW USER
-router.post('/', function (req, res) {
+// CREATES A DRIVER
+router.post('/', function (request, response) {
     Driver.create({
-            status: req.body.status,
-            driver_type: req.body.driver_type,
-            service_type: req.body.service_type,
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            current_lat: req.body.current_lat,
-            current_long: req.body.current_long
+            available: request.body.available,
+            username: request.body.username,
+            password: request.body.password,
+            email: request.body.email,
+            latitude: request.body.latitude,
+            longitude: request.body.longitude,
+            serviceType: request.body.serviceType,
+            driverType: request.body.driverType
         },
-        function (err, driver) {
-            if (err) return res.status(500).send("There was a problem adding the driver to the database.");
-            res.status(200).send(driver);
+        function (error, driver) {
+            if (error) return response.status(500).send("There was a problem adding the driver to the NUber Network.");
+            response.status(200).send(driver);
         });
 });
 
@@ -40,104 +40,55 @@ router.post('/', function (req, res) {
 /////////////////////////////
 
 // RETURNS ALL DRIVERS IN THE DATABASE
-router.get('/all/', function (req, res) {
+router.get('/', function (request, response) {
     Driver.find({}, function (error, drivers) {
-        console.log("Error: " + error);
-        if (error) return res.status(500).send("There was a problem retrieving all NUber drivers.");
-        res.status(200).send("The drivers of the NUber Network are:\n\n" + drivers);
+        if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
+        response.status(200).send("The NUber Network contains the following drivers:\n\n" + drivers);
     });
 });
 
-//RETURNS SPECIFIC DRIVER IN THE DATABASE BY ID
-router.get('/id/:id', function (req, res) {
-    Driver.findById(req.params.id, function (err, driver) {
-        if (err) return res.status(500).send("There was a problem finding the specified NUber driver.");
-        if (!driver) return res.status(404).send(driver.id + " does not match any drivers in the NUber Network.");
-        res.status(200).send("SUCCESS! NUber driver "+ driver.id + " has been found! \n\n" + driver);
+//RETURNS SPECIFIC DRIVER BY ID IN THE DATABASE
+router.get('/:id', function (request, response) {
+    Driver.findById(request.params.id, function (error, driver) {
+        if (error) return response.status(500).send("There was a problem finding the specified NUber driver.");
+        if (!driver) return response.status(404).send(driver.id + " does not match any drivers in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber driver "+ driver.id + " has been found! \n\n" + driver);
     });
 });
-
-
-// RETURNS ALL DRIVERS IN THE DATABASE BY SERVICE TYPE
-router.get('/st/:service_type', function (req, res) {
-    Driver.find({service_type : req.params.service_type}, function (error, drivers) {
-        if (error) return res.status(500).send("There was a problem retrieving a list of "+req.params.service_type+" drivers on the NUber Network.");
-        res.status(200).send("The NUber network has the following "+req.params.service_type+" drivers:\n\n" + drivers);
-    });
-});
-
-// RETURNS ALL DRIVERS IN THE DATABASE BY DRIVER TYPE
-router.get('/dt/:driver_type', function (req, res) {
-    Driver.find({driver_type : req.params.driver_type}, function (error, drivers) {
-        if (error) return res.status(500).send("There was a problem retrieving a list of "+req.params.driver_type+" style drivers on the NUber Network.");
-        res.status(200).send("The NUber network has the following "+req.params.driver_type+" style drivers:\n\n" + drivers);
-    });
-});
-
-// // UPDATE STATUS OF SPECIFIC DRIVER IN THE DATABASE
-// router.put('/all/:lat@:long/distance/:distance', function(req,res){
-//
-//     Driver.find({}, function(err,drivers){
-//         if(err) return res.status(500).send("There was an error updating the information.");
-//         var driver;
-//
-//         for (driver in drivers){
-//             get(req.param.lat, req.param.long, driver.current_lat, driver.current_long);
-//         }
-//
-//         res.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
-//     });
-//
-// });
 
 //////////////////////////////
 // DELETE
 /////////////////////////////
 
-// DELETE SPECIFIC DRIVER IN THE DATABASE
-router.delete('/id/:id', function(req,res){
-
-    Driver.findByIdAndRemove(req.params.id, function(err,driver){
-        if(err) return res.status(500).send("There was a problem deleting " + driver.id + " from the NUber network.");
-        if (!driver) return res.status(404).send(driver.id + " does not match any users in the NUber Network.");
-        res.status(200).send("SUCCESS! NUber driver " + driver.id + " has been deleted from the NUber Network.");
+// DELETE SPECIFIC DRIVER BY ID IN THE DATABASE
+router.delete('/:id', function(request,response){
+    Driver.findByIdAndRemove(request.params.id, function(error,driver){
+        if(error) return response.status(500).send("There was a problem deleting the specified driver from the NUber network.");
+        if (!driver) return response.status(404).send(driver.id + " does not match any users in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber driver " + driver.id + " has been deleted from the NUber Network.");
     });
-
 });
 
 //////////////////////////////
 // UPDATE
 /////////////////////////////
 
-// UPDATE SPECIFIC DRIVERS INFORMATION IN THE DATABASE
-router.put('/id/:id', function(req,res){
-
-    Driver.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err,driver){
-        if(err) return res.status(500).send("There was an error updating the information.");
-        if (!driver) return res.status(404).send(driver.id + " does not match any users in the NUber Network.");
-        res.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
+// UPDATE SPECIFIC DRIVERS INFORMATION BY ID IN THE DATABASE
+router.put('/:id', function(request,response){
+    Driver.findByIdAndUpdate(request.params.id, request.body, {new: true}, function(error,driver){
+        if(error) return response.status(500).send("There was an error updating the specified NU");
+        if (!driver) return response.status(404).send(driver.id + " does not match any users in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
     });
-
 });
 
-// UPDATE STATUS OF SPECIFIC DRIVER IN THE DATABASE
-router.put('/id/:id/status/:status', function(req,res){
-
-    Driver.findByIdAndUpdate(req.params.id, { status: req.params.status }, {new: true}, function(err,driver){
-        if(err) return res.status(500).send("There was an error updating the information.");
-        if (!driver) return res.status(404).send(driver.id + " does not match any users in the NUber Network.");
-        res.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
+//UPDATE STATUS OF SPECIFIC DRIVER IN THE DATABASE
+router.put('/:id/status', function(request,response){
+    Driver.findByIdAndUpdate(request.params.id, { status: request.query.available }, {new: true}, function(error,driver){
+        if(error) return response.status(500).send("There was an error updating the specified NUber driver.");
+        if (!driver) return response.status(404).send(driver.id + " does not match any drivers in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
     });
-
 });
-
-
-
-//////////////////////////////
-// HELPER FUNCTIONS
-/////////////////////////////
-function getDistance(customer_lat, customer_long, drive_lat, driver_long){
-    // Calculate the distance between customer's lat long and driver's lat long. Ask Jeremy! 
-}
 
 module.exports = router;

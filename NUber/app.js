@@ -19,15 +19,14 @@ app.get('/', function (req, res) {
     res.send(message);
 });
 
+var UserController = require('./user/UserController');
+app.use('/users', UserController);
 
-var UserController = require('./user/UserController'); // Define UserController path
-app.use('/users', UserController);                     // Define URL for UserController
-
-// var AdminController = require('./admin/AdminController');
-// app.use('/admins', AdminController);
-//
+var AdminController = require('./admin/AdminController');
+app.use('/admins', AdminController);
 
 var DriverController = require('./driver/DriverController');
 app.use('/drivers', DriverController);
+
 
 module.exports = app;

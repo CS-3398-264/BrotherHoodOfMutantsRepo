@@ -1,19 +1,21 @@
 // Trip.js
-var mongoose = require('mongoose');
-const conciergeType = ['None','Hunk', 'Hottie', 'Average Joe','Average Jane','Below Average Jones'];
+var mongoose = require('mongoose');         // Import Mongoose
+var conciergeType = require('./ConciergeType'); // Import ServiceType.js
 
+///////////////////////////////////////
+// DEFINE TRIP
+///////////////////////////////////////
 
 var TripSchema = new mongoose.Schema({
-    tripStart: String,
-    tripEnd: String,
-    totalCost: String,
+    customerID: String,
     driverID: String,
-    userID: String,
-    concierge_type String,
-    startLocation: String,
-    endLocation: String
+    tripDuration: Number,
+    tripDirectionsURL: String,
+    conciergeType: [{type: mongoose.Schema.ObjectId, ref: 'ConciergeType'}]
+},{
+    // FUNCTION: timestamps - (true) gives access to trip.createdat and trip.updatedat
+    // REFERENCE: http://mongoosejs.com/docs/guide.html#timestamps
+    timestamps: true
 });
-
 mongoose.model('Trip', TripSchema);
-
 module.exports = mongoose.model('Trip');

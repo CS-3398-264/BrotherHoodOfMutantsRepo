@@ -3,15 +3,15 @@
 //
 var mongoose = require('mongoose'); // #include mongoose
 
-// Define user Schema
+///////////////////////////////////////
+// DEFINE USER
+///////////////////////////////////////
 var UserSchema = new mongoose.Schema({
     username: String,
-    email: String,
     password: String,
-    current_address: String,
-    destination_address: String,
+    email: String,
+    latitude: Number,
+    longitude: Number
 });
-
 mongoose.model('User', UserSchema);
-
 module.exports = mongoose.model('User');

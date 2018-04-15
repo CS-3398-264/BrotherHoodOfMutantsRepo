@@ -1,83 +1,78 @@
+//
 // AdminController.js
+//
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var addDriver = require('D:/BrotherHoodOfMutantsRepo-master/NUber/driver/Driver.js');
 var Admin = require('./Admin');
 var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 
-//
-// CREATES A NEW DRIVER
-//
-router.post('/', function (req, res) {
-    addDriver.create({
-            status: req.body.status,
-            driver_type: req.body.driver_type,
-            service_type: req.body.service_type,
-            concierge_type: req.body.concierge_type,
-            username : req.body.username,
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,
-            email : req.body.email,
-            password : req.body.password,
-            curr_address : req.body.curr_address,
-            curr_latitude : req.body.curr_latitude,
-            curr_longitude : req.body.curr_longitude,
-            dest_address : req.body.dest_address,
-            dest_latitude : req.body.dest_latitude,
-            dest_longitude : req.body.dest_longitude
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ADMIN CONTROLLER FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////
+// POST
+/////////////////////////////
+
+// CREATE A NEW ADMIN IN THE DATABASE
+router.post('/', function (request, response) {
+    Admin.create({
+            username: request.body.username,
+            password: request.body.password,
+            email: request.body.email
         },
-        function (err, driver) {
-            if (err) return res.status(500).send("There was a problem adding the "+ driver.username +" to the database.");
-            res.status(200).send(driver);
+        function (error, admin) {
+            if (error) return response.status(500).send("There was a problem adding "+ admin.username +" to the NUber Network.");
+            response.status(200).send(admin);
         });
 });
 
-//
-// CREATES A NEW ADMIN
-router.post('/:userID', function(req, res){
-	Admin.create({
-		username: req.body.username,
-		Role: req.body.role,
-		curr_address: req.body.curr_address,
-		curr_latitude: req.body.curr_latitude,
-		curr_longitude:  req.body.curr_longitude
-			
-	},
-	 function (err, admins) {
-            if (err) return res.status(500).send("There was a problem adding the "+ admins.username +" to the database.");
-            res.status(200).send(admins);
-	 });
-	
-	
-	
-});
+//////////////////////////////
+// GET
+/////////////////////////////
 
-//
-// GETS A LIST OF ADMINS
-//
-
-router.get('/', function (req, res) {
+// GET ALL ADMINS IN THE DATABASE
+router.get('/', function (request, response) {
     Admin.find({}, function (error, admins) {
-        console.log("Error: " + error);
-        if (error) return res.status(500).send("There was a problem retrieving all NUber admins.");
-        res.status(200).send("The admins of the NUber Network are:\n\n" + admins);
+        if (error) return response.status(500).send("There was a problem retrieving a list of admin users from the NUber Network.");
+        response.status(200).send("The NUBer Network has the following admins:\n\n" + admins);
     });
 });
 
-
-//
-// DELETE SPECIFIC DRIVER IN THE DATABASE
-//
-router.delete('/:id', function(req,res){
-
-    addDriver.findByIdAndRemove(req.params.id, function(err,driver){
-        if(err) return res.status(500).send("There was a problem deleting " + driver.id + " from the NUber network.");
-        if (!driver) return res.status(404).send(driver.id + " does not match any users in the NUber Network.");
-        res.status(200).send("SUCCESS! NUber driver " + driver.id + " was deleted from the NUber Network.");
+// GET AN ADMIN BY ID IN THE DATABASE
+router.get('/:id', function (request, response) {
+    Admin.findById(request.params.id, function (error, admins) {
+        if (error) return response.status(500).send("There was a problem retrieving the specified NUber admin from the NUber Network.");
+        response.status(200).send("SUCCESS! The NUber admin " + request.params.id + " was found!\n\n" + admins);
     });
+});
 
+//////////////////////////////
+// DELETE
+/////////////////////////////
+
+// DELETE SPECIFIC DRIVER BY ID IN THE DATABASE
+router.delete('/:id', function(request,response){
+    addDriver.findByIdAndRemove(request.params.id, function(error,admin){
+        if(error) return response.status(500).send("There was a problem deleting the specified NUber admin from the NUber Network.");
+        if(!driver) return response.status(404).send(admin.id + " does not match any users in the NUber Network.");
+        response.status(200).send("SUCCESS! The NUber admin " + admin.id + " was deleted from the NUber Network.");
+    });
+});
+
+//////////////////////////////
+// PUT
+/////////////////////////////
+
+// UPDATE SPECIFIC USER IN THE DATABASE
+router.put('/:id', function(request,response){
+    User.findByIdAndUpdate(request.params.id, request.body, {new: true}, function(error,admin){
+        if(error) return response.status(500).send("There was an error updating the specified NUber admin.");
+        if (!admin) return response.status(404).send(admin.id + " does not match any users in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber admin " + admin.id + " has been updated.");
+    });
 });
 
 module.exports = router;
