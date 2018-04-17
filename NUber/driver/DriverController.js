@@ -84,7 +84,7 @@ router.put('/:id', function(request,response){
 
 //UPDATE STATUS OF SPECIFIC DRIVER IN THE DATABASE
 router.put('/:id/status', function(request,response){
-    Driver.findByIdAndUpdate(request.params.id, { status: request.query.available }, {new: true}, function(error,driver){
+    Driver.findByIdAndUpdate(request.params.id, { available: request.query.available }, {new: true}, function(error,driver){
         if(error) return response.status(500).send("There was an error updating the specified NUber driver.");
         if (!driver) return response.status(404).send(driver.id + " does not match any drivers in the NUber Network.");
         response.status(200).send("SUCCESS! NUber driver " + driver.id + " has been updated.");
