@@ -1,11 +1,11 @@
 //
 // UserController.js
 //
-var express = require('express');                       // #include express
-var bodyParser = require('body-parser');                // #include body-parser
-var Driver = require('./Driver');                        // #include user object (Driver.js)
-var url = require('url');
-var router = express.Router();                          // Get a new express router
+let express = require('express');                       // #include express
+let bodyParser = require('body-parser');                // #include body-parser
+let Driver = require('./Driver');                        // #include user object (Driver.js)
+let url = require('url');
+let router = express.Router();                          // Get a new express router
 router.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -30,7 +30,7 @@ router.post('/', function (request, response) {
             driverType: request.body.driverType
         },
         function (error, driver) {
-            if (error) return response.status(500).send("There was a problem adding the driver to the NUber Network.");
+            if (error) return response.status(500).send("Theere was a problem adding the driver to the NUber Network.");
             response.status(200).send(driver);
         });
 });
