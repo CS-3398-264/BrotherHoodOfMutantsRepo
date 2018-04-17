@@ -28,5 +28,7 @@ app.use('/admins', AdminController);
 var DriverController = require('./driver/DriverController');
 app.use('/drivers', DriverController);
 
+var TripController = require('./trip/TripController');
+app.use('/trips', TripController);
 
 module.exports = app;

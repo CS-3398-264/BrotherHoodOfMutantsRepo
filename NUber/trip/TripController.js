@@ -2,6 +2,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var Trip = require('./Trip');
+var Driver = require('../driver/Driver.js');
+var User = require('../user/User.js');
+let url = require('url');
 var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -13,15 +16,35 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // POST
 /////////////////////////////
 
+function getLatitude(id, schemaType){
+    schemaType.findById();
+}
+function getLongitude(id, schemaType){
+    schemaType.findById();
+}
+
+
 // CREATE A TRIP IN TEH DATABASE
-router.post('/', function(request, response){
+// POSS: trips/new?customerid=<id>&driverid=<id>&concierge=<type>
+router.post('/new', function(request, response){
+    //var customerLatitude = getLatitude(request.query.customerid, User);
+    //var customerLongitude = getLongitude(request.query.customerid, User);
+    //var driverLatitude = getLatitude(request.query.driverid, Driver);
+    //var driverLongitude = getLongitude(request.query.driverid, Driver);
+
+    var customerLatitude = 29.8688495;
+    var customerLongitude = -97.9970412;
+    var driverLatitude = 30.3080553;
+    var driverLongitude = -98.0335944;
+
+    var directionsURL = 'https://www.google.com/maps/dir/?api=1&origin='+customerLatitude+','+customerLongitude+'&destination='+driverLatitude+','+driverLongitude+'&travelmode=driving';
   Trip.create({
-          customerID: request.body.customerID,
-          driverID: request.body.driverID,
+          userID: request.query.customerid,
+          driverID: request.query.driverid,
           tripDuration: request.body.tripDuration,
           tripDistance: request.body.tripDistance,
-          tripDirectionsURL: request.body.tripDirectionsURL,
-          conciergeType: request.body.conciergeType
+          tripDirectionsURL: directionsURL,
+          conciergeType: request.query.concierge
   },
   function(error, trip){
     if(error) return response.status(500).send("Error creating trip in the NUber Network.");
@@ -44,10 +67,10 @@ router.get('/', function (request, response) {
 
 // GET A TRIP BY ID IN THE DATABASE
 router.get('/:id', function (request, response) {
-    Trip.findById(request.params.id, function (error, user) {
+    Trip.findById(request.params.id, function (error, trip) {
         if (error) return response.status(500).send("There was a problem finding the specified trip record.");
-        if (!user) return response.status(404).send(user.id + " does not match any trip records in the NUber Network.");
-        response.status(200).send("SUCCESS! NUber trip record "+ user.id +" has been found! \n\n" + user);
+        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber trip record "+ trip.id +" has been found! \n\n" + trip);
     });
 });
 //////////////////////////////
@@ -56,10 +79,10 @@ router.get('/:id', function (request, response) {
 
 // DELETE A TRIP BY ID IN THE DATABASE
 router.delete('/:id', function(request,response){
-    Trip.findAndRemove(request.params.id, function(error,trips){
-        if(error) return response.status(500).send("There was a problem deleting " + Trip.id + " from the NUber Network trip record.");
-        if (!trips) return response.status(404).send(Trip.id + " does not match any trips in the NUber Network trip record..");
-        response.status(200).send("SUCCESS! The trip " + Trip.id + " was deleted from the NUber Network trip record.");
+    Trip.findByIdAndRemove(request.params.id, function(error,trip){
+        if(error) return response.status(500).send("There was a problem deleting " + trip.id + " from the NUber Network trip record.");
+        if (!trip) return response.status(404).send(trip.id + " does not match any trips in the NUber Network trip record..");
+        response.status(200).send("SUCCESS! The trip " + trip.id + " was deleted from the NUber Network trip record.");
     });
 });
 module.exports = router;

@@ -7,7 +7,7 @@ let conciergeType = ['none','hunk','hottie','average_joe','average_jane','below_
 ///////////////////////////////////////
 
 var TripSchema = new mongoose.Schema({
-    customerID: {type: String, default: 'null'},
+    userID: {type: String, default: 'null'},
     driverID: {type: String, default: 'null'},
     tripDuration: {type: Number, default: 0},
     tripDistance: {type: Number, default: 0},
