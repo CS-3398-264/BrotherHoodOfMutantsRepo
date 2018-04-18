@@ -1,12 +1,17 @@
 //TripController
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var Trip = require('./Trip');
 var Driver = require('../driver/Driver.js');
 var User = require('../user/User.js');
 let url = require('url');
 var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
+var googleMapsClient = require('@google/maps').createClient({
+
+   key:'AIzaSyDMuI7OvPQ_laNJQECcqT3ZRb23KjRradE'
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRIP CONTROLLER FUNCTIONS
@@ -43,7 +48,6 @@ router.post('/new', function(request, response){
         let driverLatitude = person[1].latitude;
         let driverLongitude = person[1].longitude;
         let directionsURL = 'https://www.google.com/maps/dir/?api=1&origin=' +customerLatitude+ ',' +customerLongitude+ '&destination=' +driverLatitude+ ',' +driverLongitude+ '&travelmode=driving';
-
         Trip.create({
                 userID: userID,
                 driverID: driverID,
@@ -51,13 +55,11 @@ router.post('/new', function(request, response){
                 tripDistance: request.body.tripDistance,
                 tripDirectionsURL: directionsURL,
                 conciergeType: request.query.concierge
-            },
-            function (error, trip) {
+            }, function (error, trip) {
                 if (error) return response.status(500).send("Error creating trip in the NUber Network.");
                 response.status(200).send(trip);
             });
-    })
-        .then(undefined, function(error){
+        }).then(undefined, function(error){
         console.log(error);
     });
 });
@@ -81,6 +83,14 @@ router.get('/:id', function (request, response) {
         if (error) return response.status(500).send("There was a problem finding the specified trip record.");
         if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
         response.status(200).send("SUCCESS! NUber trip record "+ trip.id +" has been found! \n\n" + trip);
+    });
+});
+// GET A TRIP BY ID IN THE DATABASE AND RETURN DIRECTIONS
+router.get('/:id/directions', function (request, response) {
+    Trip.findById(request.params.id, function (error, trip) {
+        if (error) return response.status(500).send("There was a problem finding the specified trip record.");
+        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+        response.status(200).send("SUCCESS! NUber trip record "+ trip.id +" has been found! \n\n" + trip.tripDirectionsURL);
     });
 });
 //////////////////////////////
