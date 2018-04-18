@@ -16,40 +16,50 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // POST
 /////////////////////////////
 
-function getLatitude(id, schemaType){
-    schemaType.findById();
-}
-function getLongitude(id, schemaType){
-    schemaType.findById();
+
+function getPerson(id, schemaType){
+   return schemaType.findById(id);
 }
 
 
 // CREATE A TRIP IN TEH DATABASE
 // POSS: trips/new?customerid=<id>&driverid=<id>&concierge=<type>
 router.post('/new', function(request, response){
-    //var customerLatitude = getLatitude(request.query.customerid, User);
-    //var customerLongitude = getLongitude(request.query.customerid, User);
-    //var driverLatitude = getLatitude(request.query.driverid, Driver);
-    //var driverLongitude = getLongitude(request.query.driverid, Driver);
+    var userID = request.query.customerid;
+    var driverID = request.query.driverid;
 
-    var customerLatitude = 29.8688495;
-    var customerLongitude = -97.9970412;
-    var driverLatitude = 30.3080553;
-    var driverLongitude = -98.0335944;
+    User.findById(userID).exec()
+        .then(function (user) {
+            var person = [];
+            return Driver.findById(driverID).exec()
+                .then(function (driver) {
+                    return [user, driver];
+                });
+        
+    })
+        .then(function (person) {
+        let customerLatitude = person[0].latitude;
+        let customerLongitude = person[0].longitude;
+        let driverLatitude = person[1].latitude;
+        let driverLongitude = person[1].longitude;
+        let directionsURL = 'https://www.google.com/maps/dir/?api=1&origin=' +customerLatitude+ ',' +customerLongitude+ '&destination=' +driverLatitude+ ',' +driverLongitude+ '&travelmode=driving';
 
-    var directionsURL = 'https://www.google.com/maps/dir/?api=1&origin='+customerLatitude+','+customerLongitude+'&destination='+driverLatitude+','+driverLongitude+'&travelmode=driving';
-  Trip.create({
-          userID: request.query.customerid,
-          driverID: request.query.driverid,
-          tripDuration: request.body.tripDuration,
-          tripDistance: request.body.tripDistance,
-          tripDirectionsURL: directionsURL,
-          conciergeType: request.query.concierge
-  },
-  function(error, trip){
-    if(error) return response.status(500).send("Error creating trip in the NUber Network.");
-    response.status(200).send(trip);
-  });
+        Trip.create({
+                userID: userID,
+                driverID: driverID,
+                tripDuration: request.body.tripDuration,
+                tripDistance: request.body.tripDistance,
+                tripDirectionsURL: directionsURL,
+                conciergeType: request.query.concierge
+            },
+            function (error, trip) {
+                if (error) return response.status(500).send("Error creating trip in the NUber Network.");
+                response.status(200).send(trip);
+            });
+    })
+        .then(undefined, function(error){
+        console.log(error);
+    });
 });
 
 //////////////////////////////
