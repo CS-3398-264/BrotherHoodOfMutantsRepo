@@ -93,7 +93,7 @@ router.get('/:id', function (request, response) {
     Trip.findById(request.params.id, function (error, trip) {
         if (error) return response.status(500).send("There was a problem finding the specified trip record.");
         if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
-        response.status(200).send("SUCCESS! NUber trip record "+ trip.id +" has been found! \n\n" + trip);
+        response.status(200).send(trip);
     });
 });
 // GET A TRIP BY ID IN THE DATABASE AND RETURN DIRECTIONS
@@ -101,7 +101,17 @@ router.get('/:id/directions', function (request, response) {
     Trip.findById(request.params.id, function (error, trip) {
         if (error) return response.status(500).send("There was a problem finding the specified trip record.");
         if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
-        response.status(200).send("SUCCESS! NUber trip record "+ trip.id +" has been found! \n\n" + trip.tripDirectionsURL);
+        response.status(200).send(trip.tripDirectionsURL);
+    });
+});
+
+// GET A TRIP BY ID IN THE DATABASE AND RETURN DIRECTIONS
+router.get('/:id/duration', function (request, response) {
+    Trip.findById(request.params.id, function (error, trip) {
+        if (error) return response.status(500).send("There was a problem finding the specified trip record.");
+        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+        console.log(trip.tripDuration);
+        response.status(200).send((trip.tripDuration).toString());
     });
 });
 
@@ -135,7 +145,7 @@ router.delete('/:id', verifyToken,  function(request,response){
             Trip.findByIdAndRemove(request.params.id, function (error, trip) {
                 if (error) return response.status(500).send("There was a problem deleting " + trip.id + " from the NUber Network trip record.");
                 if (!trip) return response.status(404).send(trip.id + " does not match any trips in the NUber Network trip record..");
-                response.status(200).send("Success!");
+                response.status(200).send("SUCCESS!");
             });
         }
     });
@@ -149,9 +159,10 @@ router.delete('/removeall', verifyToken, function(request,response){
             response.sendStatus(403);
         } else {
             Trip.remove({}, function (error, trip) {
+                console.log(error);
                 if (error) return response.status(500).send("There was a problem deleting " + trip.id + " from the NUber Network trip record.");
                 if (!trip) return response.status(404).send(trip.id + " does not match any trips in the NUber Network trip record..");
-                response.status(200).send("Success!");
+                response.status(200).send("SUCCESS!";
             });
         }
 })
@@ -167,10 +178,8 @@ function verifyToken(request,response,next) {
         next();
 
     } else {
-
         response.sendStatus(403);
     }
-
 }
 
 

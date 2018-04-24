@@ -51,7 +51,7 @@ router.post('/', verifyToken, function (request, response) {
 router.get('/', function (request, response) {
     Driver.find({}, function (error, drivers) {
         if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
-        response.status(200).send("The NUber Network contains the following drivers:\n\n" + drivers);
+        response.status(200).send(drivers);
     });
 });
 
@@ -60,7 +60,7 @@ router.get('/:id', function (request, response) {
     Driver.findById(request.params.id, function (error, driver) {
         if (error) return response.status(500).send("There was a problem finding the specified NUber driver.");
         if (!driver) return response.status(404).send(driver.id + " does not match any drivers in the NUber Network.");
-        response.status(200).send(driver.id + driver);
+        response.status(200).send(driver);
     });
 });
 

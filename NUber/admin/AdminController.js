@@ -77,7 +77,7 @@ router.delete('/:id', verifyToken, function(request,response){
       Admin.findByIdAndRemove(request.params.id, function(error,admin){
           if(error) return response.status(500).send("There was a problem deleting the specified NUber admin from the NUber Network.");
           if(!admin) return response.status(404).send(admin.id + " does not match any users in the NUber Network.");
-          response.status(200).send("Success");
+          response.status(200).send("SUCCESS!");
       });
     }
   });

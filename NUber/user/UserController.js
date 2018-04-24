@@ -38,7 +38,7 @@ router.post('/', function (request, response) {
 router.get('/', function (request, response) {
     User.find({}, function (error, users) {
         if (error) return response.status(500).send("There was a problem retrieving a list of all NUber users.");
-        response.status(200).send("The NUber Network has the following users:\n\n" + users);
+        response.status(200).send(users);
     });
 });
 
@@ -47,7 +47,7 @@ router.get('/:id', function (request, response) {
     User.findById(request.params.id, function (error, user) {
         if (error) return response.status(500).send("There was a problem finding the specified NUber user.");
         if (!user) return response.status(404).send(user.id + " does not match any users in the NUber Network.");
-        response.status(200).send("SUCCESS! NUber user "+ user.id +" has been found! \n\n" + user);
+        response.status(200).send(user);
     });
 });
 
@@ -60,7 +60,7 @@ router.delete('/:id', function(request,response){
     User.findByIdAndRemove(request.params.id, function(error,user){
         if(error) return response.status(500).send("There was a problem deleting " + user.id + " from the NUber network.");
         if (!user) return response.status(404).send(user.id + " does not match any users in the NUber Network.");
-        response.status(200).send("SUCCESS! NUber user " + user.id + " was deleted from the NUber Network.");
+        response.status(200).send("SUCCESS!");
     });
 });
 
@@ -73,7 +73,7 @@ router.put('/:id', function(req,res){
     User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(error,user){
         if(error) return res.status(500).send("There was an error updating the information.");
         if (!user) return res.status(404).send(user.id + " does not match any users in the NUber Network.");
-        res.status(200).send("SUCCESS! NUber user " + user.id + " has been updated.");
+        res.status(200).send("SUCCESS!");
     });
 });
 module.exports = router;
