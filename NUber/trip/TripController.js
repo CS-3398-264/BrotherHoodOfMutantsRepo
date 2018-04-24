@@ -97,11 +97,19 @@ router.get('/:id/directions', function (request, response) {
     });
 });
 
-// GET A TRIP BY ID IN THE DATABASE AND RETURN DIRECTIONS
-router.get('/byuser', function (request, response) {
-    Trip.find({"customerID" : request.query.id}, function (error, trips) {
-        if (error) return response.status(500).send("There was a problem finding the trips for the specified users.");
-        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+// GET ALL TRIPS TAKEN BY SPECIFIED USER ID
+router.get('/user/:id', function (request, response) {
+    Trip.find({userID: request.params.id}, function (error, trips) {
+        if (error) return response.status(500).send("There was a problem finding the trips for the specified user.");
+        if (!trips) return response.status(404).send("Specified user does not have any trip records in the NUber Network.");
+        response.status(200).send(trips);
+    });
+});
+// GET ALL TRIPS TAKEN BY SPECIFIED DRIVER ID
+router.get('/driver/:id', function (request, response) {
+    Trip.find({driverID: request.params.id}, function (error, trips) {
+        if (error) return response.status(500).send("There was a problem finding the trips for the specified driver.");
+        if (!trips) return response.status(404).send("Specified driver does not have any trip records in the NUber Network.");
         response.status(200).send(trips);
     });
 });
