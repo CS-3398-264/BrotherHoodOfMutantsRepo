@@ -3,9 +3,7 @@
 //
 var express = require('express');   // #include express
 var db = require('./db');           // #include database
-var app = express();                // Make app an express app.
-
-
+var app = express();              // Make app an express app.
 
 //
 // GET: Homepage for NUber Network
@@ -30,5 +28,8 @@ app.use('/drivers', DriverController);
 
 var TripController = require('./trip/TripController');
 app.use('/trips', TripController);
+
+var SuperAdminController = require('./superadmin/SuperAdminController');
+app.use('/superadmins', SuperAdminController);
 
 module.exports = app;
