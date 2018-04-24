@@ -162,7 +162,7 @@ router.delete('/removeall', verifyToken, function(request,response){
                 console.log(error);
                 if (error) return response.status(500).send("There was a problem deleting " + trip.id + " from the NUber Network trip record.");
                 if (!trip) return response.status(404).send(trip.id + " does not match any trips in the NUber Network trip record..");
-                response.status(200).send("SUCCESS!";
+                response.status(200).send("SUCCESS!");
             });
         }
 })
