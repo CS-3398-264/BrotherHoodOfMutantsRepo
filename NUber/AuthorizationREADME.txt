@@ -3,7 +3,7 @@ Authentication ReadMe:
 
 SUPERADMIN
 
-1. In order to receive your SUPERADMIN authorization token perform a get on /superadmins/username.
+1. In order to receive your SUPERADMIN authorization token perform a GET request on /superadmins/username.
 	- YOUR ASSIGNED SUPERADMIN USERNAME IS: 'jasondiaz'.
 	- Be sure to type your username (jasondiaz) in all lower case. (/superadmins/jasondiaz)
 2. The server will respond with a JsonWebToken that will be required when adding or deleting NUber admins from the network.
@@ -14,11 +14,11 @@ SUPERADMIN
 Example:  KEY				VALUE
 	  authorization 		Bearer xxxxxx.yyyyyy._zzzzzz
 
-4. Repeat the same process in order to delete a driver from the NUber network.
+4. Repeat the same process in order to DELETE a driver from the NUber network.
 
 ADMIN
 
-1. After an admin has been added to NUber by a superadmin, the server will respond with another Bearer token. This token will be required
-   in order for a driver to be added or deleted from the NUber network.
-2. The same token will be required for the creation or deletion of a NUber trip. The trip will hold sensitive details, such as user and driver
-   locations. So the data composing a trip can only be created or deleted by a NUber admin.
+1. After an admin has been POSTed to NUber by a superadmin, the server will respond with another Bearer token. This token will be required
+   in order for a driver to be POSTed or DELETEd from the NUber network.
+2. The same token will be required for the POST or DELETE of a NUber trip. The trip will hold sensitive details, such as user and driver
+   locations. So the data composing a trip can only be POSTed or DELETEd by a NUber admin.
