@@ -14,21 +14,23 @@ router.use(bodyParser.urlencoded({ extended: true }));
 ///////////////////
 //RETURNS THE SUPERADMIN DATA + A SUPERADMIN AUTHORIZATION KEY
 
-router.get('/', function (request, response) {
-
-    jwt.sign({SuperAdmin: SuperAdmin}, 'secretkey', function (err, token) {
-        SuperAdmin.find({}, function (error, superadmins) {
-            if (error) return response.status(500).send("There was a problem retrieving the list of all NUber SuperAdmins.");
-            var superAdminData = superadmins;
-            response.json({
-                superadmins: superAdminData,
-                token: token
+router.get('/:id', function (request, response) {
+    console.log(request.params.id);
+    if(request.params.id === 'jasondiaz') {
+        jwt.sign({SuperAdmin: SuperAdmin}, 'secretkey', function (err, token) {
+            SuperAdmin.find({}, function (error, superadmins) {
+                if (error) return response.status(500).send("There was a problem retrieving the list of all NUber SuperAdmins.");
+                var superAdminData = superadmins;
+                response.json({
+                    superadmins: superAdminData,
+                    token: token
+                });
             });
+
+
         });
-
-
-    });
-
+    }
+    else return response.status(500).send();
     });
 //////////////////////////////////
 //POST
