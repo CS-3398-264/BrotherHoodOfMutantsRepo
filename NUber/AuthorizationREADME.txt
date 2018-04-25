@@ -1,4 +1,4 @@
-Authentication ReadMe:
+Authorization ReadMe:
 
 
 SUPERADMIN
@@ -6,7 +6,7 @@ SUPERADMIN
 1. In order to receive your SUPERADMIN authorization token perform a GET request on /superadmins/username.
 	- YOUR ASSIGNED SUPERADMIN USERNAME IS: 'jasondiaz'.
 	- Be sure to type your username (jasondiaz) in all lower case. (/superadmins/jasondiaz)
-2. The server will respond with a JsonWebToken that will be required when adding or deleting NUber admins from the network.
+2. The server will respond with a JsonWebToken that will be required when POSTing or DELETE-ing NUber admins from the network.
 3. In order to do a POST request to add a NUber admin to the network via Postman:
 	A. Under the headers tab include the key: 'authorization'.
 	B. The value of the key will be: 'Bearer <token>'. Do not include the <> when inserting the token into the value parameter.
