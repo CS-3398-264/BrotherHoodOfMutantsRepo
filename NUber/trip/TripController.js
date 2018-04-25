@@ -21,16 +21,11 @@ var googleDistance = require('google-distance');
 /////////////////////////////
 
 
-function getPerson(id, schemaType){
-    return schemaType.findById(id);
-}
-
-
 // CREATE A TRIP IN THE DATABASE
-// POSS: trips/new?customerid=<id>&driverid=<id>&concierge=<type>
+// URL: trips/new?userid=<id>&driverid=<id>&concierge=<type>
 router.post('/new', verifyToken, function(request, response){
 
-    var userID = request.query.customerid;
+    var userID = request.query.userid;
     var driverID = request.query.driverid;
 
     jwt.verify(request.token, 'secretadminkey', function(error,authData) {
