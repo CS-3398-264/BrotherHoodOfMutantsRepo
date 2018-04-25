@@ -13,21 +13,21 @@ npm install enum --save
 ////////////////////////////////////////////////////////////
 
 ////////////
-/users
+// https://nuber-network.herokuapp.com/users
 ///////////
 
 ////////////
-/drivers
+// https://nuber-network.herokuapp.com/driver
 ////////////
 
 ////////////
-/trips
+// https://nuber-network.herokuapp.com/trips
 ////////////
 
 ////////////
-/admins
+// https://nuber-network.herokuapp.com/admins
 ////////////
 
 ////////////
-/superadmins
+// https://nuber-network.herokuapp.com/superadmins
 ////////////
