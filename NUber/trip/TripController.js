@@ -160,7 +160,7 @@ router.delete('/removeall', verifyToken, function(request,response){
                 response.status(200).send("SUCCESS!");
             });
         }
-})
+    })
 });
 //verifyToken
 function verifyToken(request,response,next) {

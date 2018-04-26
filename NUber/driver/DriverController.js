@@ -63,6 +63,65 @@ router.get('/:id', function (request, response) {
         response.status(200).send(driver);
     });
 });
+//RETURNS LIST OF ALL DRIVERS IN SPECIFIED RANGE
+// URL:
+router.get('/range', function(request, response){
+    var userID = request.query.userid;
+    var range = request.query.range;
+    var driversInRange = [];
+
+    User.findById(userID).exec()
+        .then(function (user) {
+            var person = [];
+            return Driver.find({}).exec()
+                .then(function (drivers) {
+                    return [user, drivers];
+                });
+        })
+        .then(function (person) {
+            let customerLatitude = person[0].latitude;
+            let customerLongitude = person[0].longitude;
+            console.log(customerLatitude);
+            console.log(customerLongitude);
+            var i;
+            for (i = 0;i < person[1].length;i++) {
+
+                var driverLatitude = person[1][i].latitude;
+                //console.log(driverLatitude);
+                var driverLongitude = person[1][i].longitude;
+                //console.log(driverLongitude);
+                var d = getDistanceFromLatLonInMiles(customerLatitude, customerLongitude, driverLatitude, driverLongitude);
+                //console.log(d);
+                if(d <= range) driversInRange.push(person[1][i]);
+                console.log(driversInRange.toString());
+
+                //if (persons[1]) return response.status(500).send("There was a problem retrieving the list of NUber drivers within range.");
+                if (!person[1]) return response.status(404).send("No NUber drivers could be found within "+range+" miles of specified location.")
+                response.status(200).send(driversInRange);
+            }
+
+        }).then(undefined, function(error){
+        console.log(error)
+
+    });
+});
+function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
+    var R = 3595; // Radius of the earth in mi
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1);
+    var a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c; // Distance in mi
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
+}
 
 //////////////////////////////
 // DELETE
@@ -75,13 +134,31 @@ router.delete('/:id', verifyToken, function(request,response){
       response.sendStatus(403);
     } else {
 
-    Driver.findByIdAndRemove(request.params.id, function(error,driver){
-        if(error) return response.status(500).send("There was a problem deleting the specified driver from the NUber network.");
-        if (!driver) return response.status(404).send(driver.id + " does not match any users in the NUber Network.");
-        response.status(200).send("Success");
-    });
-  }
+        Driver.findByIdAndRemove(request.params.id, function(error,driver){
+            if(error) return response.status(500).send("There was a problem deleting the specified driver from the NUber network.");
+            if (!driver) return response.status(404).send(driver.id + " does not match any users in the NUber Network.");
+            response.status(200).send("Success");
+        });
+    }
+  });
 });
+
+
+// DELETE A TRIP BY ID IN THE DATABASE
+router.delete('/removeall', verifyToken, function(request,response){
+
+    jwt.verify(request.token, 'secretadminkey', function(error,authData){
+        if(error) {
+            response.sendStatus(403);
+        } else {
+            Driver.remove({}, function (error, trip) {
+                console.log(error);
+                if (error) return response.status(500).send("There was a problem deleting " + driver.id + " from the NUber Network trip record.");
+                if (!trip) return response.status(404).send(driver.id + " does not match any trips in the NUber Network trip record..");
+                response.status(200).send("SUCCESS!");
+            });
+        }
+    })
 });
 
 //////////////////////////////
