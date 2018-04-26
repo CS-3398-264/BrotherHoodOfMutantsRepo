@@ -15,7 +15,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //RETURNS THE SUPERADMIN DATA + A SUPERADMIN AUTHORIZATION KEY
 
 router.get('/:id', function (request, response) {
-    console.log(request.params.id);
+  
     if(request.params.id === 'jasondiaz') {
         jwt.sign({SuperAdmin: SuperAdmin}, 'secretkey', function (err, token) {
             SuperAdmin.find({}, function (error, superadmins) {
