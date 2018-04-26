@@ -4,6 +4,7 @@
 let express = require('express');                       // #include express
 let bodyParser = require('body-parser');                // #include body-parser
 let Driver = require('./Driver');                        // #include user object (Driver.js)
+var User = require('../user/User.js');
 let url = require('url');
 let router = express.Router();
 var jwt = require('jsonwebtoken');                    // Get a new express router
@@ -65,9 +66,9 @@ router.get('/:id', function (request, response) {
 });
 //RETURNS LIST OF ALL DRIVERS IN SPECIFIED RANGE
 // URL:
-router.get('/range', function(request, response){
-    var userID = request.query.userid;
-    var range = request.query.range;
+router.get('/:id/range', function(request, response){
+/*    var userID = request.params.userid;
+    var range = request.query.distance;
     var driversInRange = [];
 
     User.findById(userID).exec()
@@ -75,10 +76,12 @@ router.get('/range', function(request, response){
             var person = [];
             return Driver.find({}).exec()
                 .then(function (drivers) {
+                    console.log(user.latitude, user.longitude)
                     return [user, drivers];
                 });
         })
         .then(function (person) {
+            console.log(person[0].latitude, person[0].longitude);
             let customerLatitude = person[0].latitude;
             let customerLongitude = person[0].longitude;
             console.log(customerLatitude);
@@ -103,6 +106,27 @@ router.get('/range', function(request, response){
         }).then(undefined, function(error){
         console.log(error)
 
+    });*/
+
+    var userID = request.params.userid;
+    var range = request.query.distance;
+    User.findById(userID).exec().then(
+        function (user) {
+            var person = [];
+            return Driver.find({},function(error,drivers){
+                if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
+            }).exec().then(
+                function (driver) {
+                    return [user, driver];
+                });
+        }).then(function (person) {
+
+        console.log(person[0].longitude);
+        console.log(person[0].latitude);
+        console.log(person[1].longitude);
+        console.log(person[1].latitude);
+    }).then(undefined, function (error) {
+        console.log(error);
     });
 });
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
