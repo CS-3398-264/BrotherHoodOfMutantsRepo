@@ -232,7 +232,9 @@ NOTE! All types above MUST be entered as they appear.
 // Authorization Instructions
 ///////////////////////////////////////////////////////////////////
 
-SUPERADMIN
+////////////////////////////////////////////////////
+// SUPERADMIN
+////////////////////////////////////////////////////
 
 1. In order to receive your SUPERADMIN authorization token perform a GET request on /superadmins/username.
  	  A. YOUR ASSIGNED SUPERADMIN USERNAME IS: 'jasondiaz'.
@@ -247,9 +249,12 @@ Example:  KEY				VALUE
 
 4. Repeat the same process in order to DELETE a driver from the NUber network.
 
-ADMIN
+////////////////////////////////////////////////////
+// ADMIN
+////////////////////////////////////////////////////
 
 1. After an admin has been POSTed to NUber by a superadmin, the server will respond with another Bearer token. This token will be required
    in order for a driver to be POSTed or DELETEd from the NUber network.
 2. The same token will be required for the POST or DELETE of a NUber trip. The trip will hold sensitive details, such as user and driver
    locations. So the data composing a trip can only be POSTed or DELETEd by a NUber admin.
+
