@@ -56,7 +56,7 @@ router.post('/new', verifyToken, function(request, response){
                         tripDirectionsURL: directionsURL,
                         conciergeType: request.query.concierge
                     }, function (error, trip) {
-                        if (error) return response.status(500).send("Error creating trip in the NUber Network.");
+                        if (error) return response.status(500).send({error:"Error creating trip in the NUber Network."});
                         response.status(200).send(trip);
                     });
                 });
@@ -75,7 +75,7 @@ router.post('/new', verifyToken, function(request, response){
 router.get('/', function (request, response) {
     Trip.find({}, function (error, trips) {
         console.log("Error: " + error);
-        if (error) return response.status(500).send("There was a problem retrieving all trips records in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem retrieving all trips records in the NUber Network."});
         response.status(200).send(trips);
     });
 });
@@ -83,16 +83,16 @@ router.get('/', function (request, response) {
 // GET A TRIP BY ID IN THE DATABASE
 router.get('/:id', function (request, response) {
     Trip.findById(request.params.id, function (error, trip) {
-        if (error) return response.status(500).send("There was a problem finding the specified trip record.");
-        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the specified trip record."});
+        if (!trip) return response.status(404).send({error:"No matching trip record in the NUber Network."});
         response.status(200).send(trip);
     });
 });
 // GET A TRIP BY ID IN THE DATABASE AND RETURN DIRECTIONS
 router.get('/:id/directions', function (request, response) {
     Trip.findById(request.params.id, function (error, trip) {
-        if (error) return response.status(500).send("There was a problem finding the specified trip record.");
-        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the specified trip record."});
+        if (!trip) return response.status(404).send({error:"No matching trip record in the NUber Network."});
         response.status(200).send(trip.tripDirectionsURL);
     });
 });
@@ -100,8 +100,8 @@ router.get('/:id/directions', function (request, response) {
 // GET A TRIP BY ID IN THE DATABASE AND RETURN DIRECTIONS
 router.get('/:id/duration', function (request, response) {
     Trip.findById(request.params.id, function (error, trip) {
-        if (error) return response.status(500).send("There was a problem finding the specified trip record.");
-        if (!trip) return response.status(404).send(trip.id + " does not match any trip records in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the specified trip record."});
+        if (!trip) return response.status(404).send({error:"No matching trip record in the NUber Network."});
         console.log(trip.tripDuration);
         response.status(200).send((trip.tripDuration).toString());
     });
@@ -110,16 +110,16 @@ router.get('/:id/duration', function (request, response) {
 // GET ALL TRIPS TAKEN BY SPECIFIED USER ID
 router.get('/user/:id', function (request, response) {
     Trip.find({userID: request.params.id}, function (error, trips) {
-        if (error) return response.status(500).send("There was a problem finding the trips for the specified user.");
-        if (!trips) return response.status(404).send("Specified user does not have any trip records in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the trips for the specified user."});
+        if (!trips) return response.status(404).send({error:"Specified user does not have any trip records in the NUber Network."});
         response.status(200).send(trips);
     });
 });
 // GET ALL TRIPS TAKEN BY SPECIFIED DRIVER ID
 router.get('/driver/:id', function (request, response) {
     Trip.find({driverID: request.params.id}, function (error, trips) {
-        if (error) return response.status(500).send("There was a problem finding the trips for the specified driver.");
-        if (!trips) return response.status(404).send("Specified driver does not have any trip records in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the trips for the specified driver."});
+        if (!trips) return response.status(404).send({error:"Specified driver does not have any trip records in the NUber Network."});
         response.status(200).send(trips);
     });
 });
@@ -136,9 +136,9 @@ router.delete('/:id', verifyToken,  function(request,response){
             response.sendStatus(403);
         } else {
             Trip.findByIdAndRemove(request.params.id, function (error, trip) {
-                if (error) return response.status(500).send("There was a problem deleting " + trip.id + " from the NUber Network trip record.");
-                if (!trip) return response.status(404).send(trip.id + " does not match any trips in the NUber Network trip record..");
-                response.status(200).send("SUCCESS!");
+                if (error) return response.status(500).send({error:"There was a problem deleting the specified trip from the NUber Network."});
+                if (!trip) return response.status(404).send({error:"No matching trips in the NUber Network."});
+                response.status(200).send({success:"Removed!"});
             });
         }
     });
@@ -153,9 +153,9 @@ router.delete('/removeall', verifyToken, function(request,response){
         } else {
             Trip.remove({}, function (error, trip) {
                 console.log(error);
-                if (error) return response.status(500).send("There was a problem deleting " + trip.id + " from the NUber Network trip record.");
-                if (!trip) return response.status(404).send(trip.id + " does not match any trips in the NUber Network trip record..");
-                response.status(200).send("SUCCESS!");
+                if (error) return response.status(500).send({error:"There was a problem deleting the specified trip from the NUber Network."});
+                if (!trip) return response.status(404).send({error:"No matching trips in the NUber Network."});
+                response.status(200).send({success:"Removed All!"});
             });
         }
     })

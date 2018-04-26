@@ -37,7 +37,7 @@ router.post('/', verifyToken, function (request, response) {
                 driverType: request.body.driverType
             },
             function (error, driver) {
-                if (error) return response.status(500).send("There was a problem adding the driver to the NUber Network.");
+                if (error) return response.status(500).send({error:"There was a problem adding the driver to the NUber Network."});
                 response.status(200).send(driver);
             });
           }
@@ -51,7 +51,7 @@ router.post('/', verifyToken, function (request, response) {
 // RETURNS ALL DRIVERS IN THE DATABASE
 router.get('/', function (request, response) {
     Driver.find({}, function (error, drivers) {
-        if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
+        if (error) return response.status(500).send({error:"There was a problem retrieving the list of all NUber drivers."});
         response.status(200).send(drivers);
     });
 });
@@ -59,8 +59,8 @@ router.get('/', function (request, response) {
 //RETURNS SPECIFIC DRIVER BY ID IN THE DATABASE
 router.get('/:id', function (request, response) {
     Driver.findById(request.params.id, function (error, driver) {
-        if (error) return response.status(500).send("There was a problem finding the specified NUber driver.");
-        if (!driver) return response.status(404).send(driver.id + " does not match any drivers in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the specified NUber driver."});
+        if (!driver) return response.status(404).send({error:driver.id + " does not match any drivers in the NUber Network."});
         response.status(200).send(driver);
     });
 });
@@ -68,8 +68,8 @@ router.get('/:id', function (request, response) {
 // RETURNS ALL DRIVERS OF SPECIFIED SERVICE TYPE IN THE DATABASE
 router.get('/service/:type', function(request,response){
     Driver.find({serviceType: request.params.type}, function (error, drivers){
-        if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
-        if (!Array.isArray(drivers) || !drivers.length) return response.status(404).send("No drivers of service type "+request.params.type+ " found!");
+        if (error) return response.status(500).send({error:"There was a problem retrieving the list of all NUber drivers."});
+        if (!Array.isArray(drivers) || !drivers.length) return response.status(404).send({error:"No drivers of service type "+request.params.type+ " found!"});
         response.status(200).send(drivers);
     });
 });
@@ -77,8 +77,8 @@ router.get('/service/:type', function(request,response){
 // RETURNS ALL DRIVERS OF SPECIFIED DRIVER TYPE IN THE DATABASE
 router.get('/type/:type', function(request,response){
     Driver.find({driverType: request.params.type}, function (error, drivers){
-        if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
-        if (!Array.isArray(drivers) || !drivers.length) return response.status(404).send("No drivers of driver type "+request.params.type+ " found!");
+        if (error) return response.status(500).send({error:"There was a problem retrieving the list of all NUber drivers."});
+        if (!Array.isArray(drivers) || !drivers.length) return response.status(404).send({error:"No drivers of driver type "+request.params.type+ " found!"});
         response.status(200).send(drivers);
     });
 });
@@ -114,7 +114,7 @@ var userID = request.params.id;
                 }
             });
             if(!Array.isArray(driversInRange) || !driversInRange.length){
-                response.status(404).send("ERROR! No drivers found within " + desiredDistance +" miles.");
+                response.status(404).send({error:"No drivers found within " + desiredDistance +" miles."});
             } else {
                 response.status(200).send(driversInRange);
             }
@@ -155,9 +155,9 @@ router.delete('/:id', verifyToken, function(request,response){
     } else {
 
         Driver.findByIdAndRemove(request.params.id, function(error,driver){
-            if(error) return response.status(500).send("There was a problem deleting the specified driver from the NUber network.");
-            if (!driver) return response.status(404).send(driver.id + " does not match any users in the NUber Network.");
-            response.status(200).send("Success");
+            if(error) return response.status(500).send({error:"There was a problem deleting the specified driver from the NUber network."});
+            if (!driver) return response.status(404).send({error:"No matching users in the NUber Network."});
+            response.status(200).send({success:"Success!"});
         });
     }
   });
@@ -172,8 +172,8 @@ router.delete('/removeall', verifyToken, function(request,response){
         } else {
             Driver.remove({}, function (error, trip) {
                 console.log(error);
-                if (error) return response.status(500).send("There was a problem deleting " + driver.id + " from the NUber Network trip record.");
-                if (!trip) return response.status(404).send(driver.id + " does not match any trips in the NUber Network trip record..");
+                if (error) return response.status(500).send({error:"There was a problem deleting the specified user from the NUber Network trip record."});
+                if (!trip) return response.status(404).send({error:"No trips in the NUber Network."});
                 response.status(200).send("SUCCESS!");
             });
         }
@@ -187,8 +187,8 @@ router.delete('/removeall', verifyToken, function(request,response){
 // UPDATE SPECIFIC DRIVERS INFORMATION BY ID IN THE DATABASE
 router.put('/:id', function(request,response){
     Driver.findByIdAndUpdate(request.params.id, request.body, {new: true}, function(error,driver){
-        if(error) return response.status(500).send("There was an error updating the specified NU");
-        if (!driver) return response.status(404).send(driver.id + " does not match any users in the NUber Network.");
+        if(error) return response.status(500).send({error:"There was an error updating the specified NU"});
+        if (!driver) return response.status(404).send({error:"No matching users in the NUber Network."});
         response.status(200).send(driver.id);
     });
 });

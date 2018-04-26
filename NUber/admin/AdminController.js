@@ -17,6 +17,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // POST
 /////////////////////////////
 
+var message;
 // CREATES A NEW ADMIN IN THE DATABASE
 router.post('/', verifyToken, function (request, response) {
     let adminAuth = {
@@ -30,7 +31,7 @@ router.post('/', verifyToken, function (request, response) {
             response.sendStatus(403);
         } else {
             Admin.create(adminAuth,function (error, admin) {
-                if (error) return response.status(500).send("There was a problem adding "+ admin.username +" to the NUber Network.");
+                if (error) return response.status(500).send({error:"There was a problem adding the user to the NUber Network."});
             });
         }
 
@@ -47,7 +48,7 @@ router.post('/', verifyToken, function (request, response) {
 // GET ALL ADMINS IN THE DATABASE
 router.get('/', function (request, response) {
     Admin.find({}, function (error, admins) {
-        if (error) return response.status(500).send("There was a problem retrieving a list of admin users from the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem retrieving a list of admin users from the NUber Network."});
         response.status(200).send(admins);
     });
 });
@@ -55,7 +56,7 @@ router.get('/', function (request, response) {
 // GET AN ADMIN BY ID IN THE DATABASE
 router.get('/:id', function (request, response) {
     Admin.findById(request.params.id, function (error, admins) {
-        if (error) return response.status(500).send("There was a problem retrieving the specified NUber admin from the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem retrieving the specified NUber admin from the NUber Network."});
         response.status(200).send(request.params.id + admins);
     });
 });
@@ -71,9 +72,9 @@ router.delete('/:id', verifyToken, function(request,response){
       response.sendStatus(403);
     } else {
       Admin.findByIdAndRemove(request.params.id, function(error,admin){
-          if(error) return response.status(500).send("There was a problem deleting the specified NUber admin from the NUber Network.");
-          if(!admin) return response.status(404).send(admin.id + " does not match any users in the NUber Network.");
-          response.status(200).send("SUCCESS!");
+          if(error) return response.status(500).send({error:"There was a problem deleting the specified NUber admin from the NUber Network."});
+          if(!admin) return response.status(404).send({error:"No matching users in the NUber Network."});
+          response.status(200).send({success:"Removed!"});
       });
     }
   });
@@ -86,8 +87,8 @@ router.delete('/:id', verifyToken, function(request,response){
 // UPDATE SPECIFIC USER IN THE DATABASE
 router.put('/:id', function(request,response){
     User.findByIdAndUpdate(request.params.id, request.body, {new: true}, function(error,admin){
-        if(error) return response.status(500).send("There was an error updating the specified NUber admin.");
-        if (!admin) return response.status(404).send(admin.id + " does not match any users in the NUber Network.");
+        if(error) return response.status(500).send({error:"There was an error updating the specified NUber admin."});
+        if (!admin) return response.status(404).send({error:"No matching users in the NUber Network."});
         response.status(200).send(admin.id);
     });
 });

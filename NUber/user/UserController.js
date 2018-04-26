@@ -25,7 +25,7 @@ router.post('/', function (request, response) {
             longitude : request.body.longitude
         },
         function (error, user) {
-            if (error) return response.status(500).send("There was a problem adding the "+ user.username +" to the NUber Network.");
+            if (error) return response.status(500).send({error:"There was a problem adding the user to the NUber Network."});
             response.status(200).send(user);
         });
 });
@@ -37,7 +37,7 @@ router.post('/', function (request, response) {
 // RETURNS ALL THE USERS IN THE DATABASE
 router.get('/', function (request, response) {
     User.find({}, function (error, users) {
-        if (error) return response.status(500).send("There was a problem retrieving a list of all NUber users.");
+        if (error) return response.status(500).send({error:"There was a problem retrieving a list of all NUber users."});
         response.status(200).send(users);
     });
 });
@@ -45,8 +45,8 @@ router.get('/', function (request, response) {
 // RETURNS SPECIFIC USER IN THE DATABASE
 router.get('/:id', function (request, response) {
     User.findById(request.params.id, function (error, user) {
-        if (error) return response.status(500).send("There was a problem finding the specified NUber user.");
-        if (!user) return response.status(404).send(user.id + " does not match any users in the NUber Network.");
+        if (error) return response.status(500).send({error:"There was a problem finding the specified NUber user."});
+        if (!user) return response.status(404).send({error:"No matching users in the NUber Network."});
         response.status(200).send(user);
     });
 });
@@ -58,9 +58,9 @@ router.get('/:id', function (request, response) {
 // DELETE SPECIFIC USER IN THE DATABASE
 router.delete('/:id', function(request,response){
     User.findByIdAndRemove(request.params.id, function(error,user){
-        if(error) return response.status(500).send("There was a problem deleting " + user.id + " from the NUber network.");
-        if (!user) return response.status(404).send(user.id + " does not match any users in the NUber Network.");
-        response.status(200).send("SUCCESS!");
+        if(error) return response.status(500).send({error:"There was a problem deleting specified user from the NUber network."});
+        if (!user) return response.status(404).send({error:"No matching users in the NUber Network."});
+        response.status(200).send({success:"Removed!"});
     });
 });
 
@@ -71,9 +71,9 @@ router.delete('/:id', function(request,response){
 // UPDATE SPECIFIC USER IN THE DATABASE
 router.put('/:id', function(req,res){
     User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(error,user){
-        if(error) return res.status(500).send("There was an error updating the information.");
-        if (!user) return res.status(404).send(user.id + " does not match any users in the NUber Network.");
-        res.status(200).send("SUCCESS!");
+        if(error) return res.status(500).send({error:"There was an error updating the information."});
+        if (!user) return res.status(404).send({error:" No matching users in the NUber Network."});
+        res.status(200).send({success:"Updated!"});
     });
 });
 
