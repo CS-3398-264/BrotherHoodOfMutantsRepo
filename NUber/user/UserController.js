@@ -1,10 +1,10 @@
 ///
 // UserController.js
 //
-var express = require('express');                       // #include express
-var bodyParser = require('body-parser');                // #include body-parser
-var User = require('./User');                           // #include user object (User.js)
-var router = express.Router();                          // Define an express router
+let express = require('express');                       // #include express
+let bodyParser = require('body-parser');                // #include body-parser
+let User = require('./User');                           // #include user object (User.js)
+let router = express.Router();                          // Define an express router
 router.use(bodyParser.urlencoded({ extended: true }));
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,6 @@ router.delete('/:id', function(request,response){
     });
 });
 
-
 //////////////////////////////
 // PUT
 /////////////////////////////
@@ -77,4 +76,5 @@ router.put('/:id', function(req,res){
         res.status(200).send("SUCCESS!");
     });
 });
+
 module.exports = router;

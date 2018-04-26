@@ -1,14 +1,14 @@
 //
 // Driver.js
 //
-let mongoose = require('mongoose'); // #include mongoose
+let mongoose = require('mongoose');
 let driverType = ['chauffeur','amateur','baby_driver', 'betty_white'];
 let serviceType = ['nuber_x','nuber_xl', 'number_select','nuber_black','nuber_suv','nuber_lux'];
 
 ///////////////////////////////////////
 // DEFINE DRIVER
 ///////////////////////////////////////
-var DriverSchema = new mongoose.Schema({
+let DriverSchema = new mongoose.Schema({
     available: {type:Boolean, default: false},
     username: {type: String, default: 'null'},
     password: {type: String, default: 'null'},
@@ -18,5 +18,7 @@ var DriverSchema = new mongoose.Schema({
     serviceType: {type: String, enum: serviceType, default: 'nuber_x'},
     driverType: {type: String, enum: driverType, default: 'amateur'}
 });
+
+// EXPORT MODEL SCHEMA.
 mongoose.model('Driver', DriverSchema);
 module.exports = mongoose.model('Driver');

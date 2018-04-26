@@ -1,11 +1,10 @@
 //
 // server.js
 //
-var app = require('./app');             // #include application (app.js)
+let app = require('./app');
+let port = process.env.PORT || 8080;
 
-var port = process.env.PORT || 8080;    // Setup port using port #8080
-
-// Confirm port is up and running on specified port.
-var server = app.listen(port, function(){
+// CONFIRM SERVER IS RUNNING.
+let server = app.listen(port, function(){
     console.log("Express Server listening on port " + port + ".");
 });

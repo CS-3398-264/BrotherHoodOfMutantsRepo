@@ -1,16 +1,15 @@
 //TripController
-var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var Trip = require('./Trip');
-var Driver = require('../driver/Driver.js');
-var User = require('../user/User.js');
+let express = require('express');
+let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
+let Trip = require('./Trip');
+let Driver = require('../driver/Driver.js');
+let User = require('../user/User.js');
 let url = require('url');
-var jwt = require('jsonwebtoken');
-var router = express.Router();
+let jwt = require('jsonwebtoken');
+let router = express.Router();
+let googleDistance = require('google-distance');
 router.use(bodyParser.urlencoded({ extended: true }));
-
-var googleDistance = require('google-distance');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRIP CONTROLLER FUNCTIONS
@@ -20,13 +19,11 @@ var googleDistance = require('google-distance');
 // POST
 /////////////////////////////
 
-
 // CREATE A TRIP IN THE DATABASE
-// URL: trips/new?userid=<id>&driverid=<id>&concierge=<type>
 router.post('/new', verifyToken, function(request, response){
 
-    var userID = request.query.userid;
-    var driverID = request.query.driverid;
+    let userID = request.query.userid;
+    let driverID = request.query.driverid;
 
     jwt.verify(request.token, 'secretadminkey', function(error,authData) {
         if (error) {
@@ -34,7 +31,7 @@ router.post('/new', verifyToken, function(request, response){
         } else {
             User.findById(userID).exec().then(
                 function (user) {
-                    var person = [];
+                    let person = [];
                     return Driver.findById(driverID).exec().then(
                         function (driver) {
                             return [user, driver];
@@ -126,6 +123,7 @@ router.get('/driver/:id', function (request, response) {
         response.status(200).send(trips);
     });
 });
+
 //////////////////////////////
 // DELETE
 /////////////////////////////
@@ -162,7 +160,8 @@ router.delete('/removeall', verifyToken, function(request,response){
         }
     })
 });
-//verifyToken
+
+//VERIFYTOKEN
 function verifyToken(request,response,next) {
     //get the auth Header value
     const bearerHeader = request.headers['authorization'];
@@ -176,6 +175,5 @@ function verifyToken(request,response,next) {
         response.sendStatus(403);
     }
 }
-
 
 module.exports = router;

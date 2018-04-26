@@ -1,13 +1,13 @@
 //
 // UserController.js
 //
-let express = require('express');                       // #include express
-let bodyParser = require('body-parser');                // #include body-parser
-let Driver = require('./Driver');                        // #include user object (Driver.js)
-var User = require('../user/User.js');
+let express = require('express');
+let bodyParser = require('body-parser');
+let Driver = require('./Driver');
+let User = require('../user/User.js');
 let url = require('url');
 let router = express.Router();
-var jwt = require('jsonwebtoken');                    // Get a new express router
+let jwt = require('jsonwebtoken');
 router.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -64,11 +64,28 @@ router.get('/:id', function (request, response) {
         response.status(200).send(driver);
     });
 });
+
+// RETURNS ALL DRIVERS OF SPECIFIED SERVICE TYPE IN THE DATABASE
+router.get('/service/:type', function(request,response){
+    Driver.find({serviceType: request.params.type}, function (error, drivers){
+        if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
+        if (!Array.isArray(drivers) || !drivers.length) return response.status(404).send("No drivers of service type "+request.params.type+ " found!");
+        response.status(200).send(drivers);
+    });
+});
+
+// RETURNS ALL DRIVERS OF SPECIFIED DRIVER TYPE IN THE DATABASE
+router.get('/type/:type', function(request,response){
+    Driver.find({driverType: request.params.type}, function (error, drivers){
+        if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
+        if (!Array.isArray(drivers) || !drivers.length) return response.status(404).send("No drivers of driver type "+request.params.type+ " found!");
+        response.status(200).send(drivers);
+    });
+});
+
 //RETURNS LIST OF ALL DRIVERS IN SPECIFIED RANGE
-// URL:
 router.get('/:id/range', function(request, response){
 var userID = request.params.id;
-    var desiredDistance = request.query.distance;
 
     User.findById(userID).exec()
         .then(function (user) {
@@ -83,6 +100,7 @@ var userID = request.params.id;
             let customerLongitude = person[0].longitude;
             let drivers = person[1];
             var driversInRange = [];
+            var desiredDistance = request.query.distance;
 
             drivers.forEach(function (driver) {
 
@@ -96,7 +114,7 @@ var userID = request.params.id;
                 }
             });
             if(!Array.isArray(driversInRange) || !driversInRange.length){
-                response.status(404).send("ERROR! No Drivers Found!")
+                response.status(404).send("ERROR! No drivers found within " + desiredDistance +" miles.");
             } else {
                 response.status(200).send(driversInRange);
             }
@@ -105,6 +123,7 @@ var userID = request.params.id;
     });
 });
 
+// FUNCTION TO CALCULATE DISTANCE BETWEEN TWO LAT/LONGS
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
     var R = 3595; // Radius of the earth in mi
     var dLat = deg2rad(lat2-lat1);  // deg2rad below
@@ -119,6 +138,7 @@ function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
     return d;
 }
 
+// FUNCTION TO CONVERT DEGREES TO RADIANS
 function deg2rad(deg) {
     return deg * (Math.PI/180)
 }
@@ -142,7 +162,6 @@ router.delete('/:id', verifyToken, function(request,response){
     }
   });
 });
-
 
 // DELETE A TRIP BY ID IN THE DATABASE
 router.delete('/removeall', verifyToken, function(request,response){
@@ -183,9 +202,7 @@ router.put('/:id/status', function(request,response){
     });
 });
 
-
-
-//verifyToken
+// VERIFYTOKEN
 function verifyToken(request,response,next) {
   //get the auth Header value
   const bearerHeader = request.headers['authorization'];
@@ -201,4 +218,5 @@ function verifyToken(request,response,next) {
   }
 
 }
+
 module.exports = router;

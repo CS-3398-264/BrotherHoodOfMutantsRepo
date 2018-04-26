@@ -1,35 +1,37 @@
 //
 // app.js
 //
-var express = require('express');   // #include express
-var db = require('./db');           // #include database
-var app = express();              // Make app an express app.
+let express = require('express');
+let db = require('./db');
+let app = express();
 
-//
-// GET: Homepage for NUber Network
-//
-var message =
-    "Welcome To The NUber Network API!\n\n" +
-    "[GET] /users - To find all NUber Users.\n" +
-    "[GET] /drivers - To find all NUber Drivers.\n" +
-    "[GET] /admins - To find all NUber Admins.\n";
+//////////////////////////////
+// GET HOMEPAGE
+/////////////////////////////
+
+let message = "Welcome To The NUber Network API!";
+
 app.get('/', function (req, res) {
     res.send(message);
 });
 
-var UserController = require('./user/UserController');
+//////////////////////////////
+// CONTROLLERS
+/////////////////////////////
+
+let UserController = require('./user/UserController');
 app.use('/users', UserController);
 
-var AdminController = require('./admin/AdminController');
+let AdminController = require('./admin/AdminController');
 app.use('/admins', AdminController);
 
-var DriverController = require('./driver/DriverController');
+let DriverController = require('./driver/DriverController');
 app.use('/drivers', DriverController);
 
-var TripController = require('./trip/TripController');
+let TripController = require('./trip/TripController');
 app.use('/trips', TripController);
 
-var SuperAdminController = require('./superadmin/SuperAdminController');
+let SuperAdminController = require('./superadmin/SuperAdminController');
 app.use('/superadmins', SuperAdminController);
 
 module.exports = app;

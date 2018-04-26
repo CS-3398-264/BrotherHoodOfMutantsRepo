@@ -1,12 +1,12 @@
 //
 // AdminController.js
 //
-var express = require('express');
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var Admin = require('./Admin');
-var jwt = require('jsonwebtoken');
-var router = express.Router();
+let express = require('express');
+let mongoose = require('mongoose');
+let bodyParser = require('body-parser');
+let Admin = require('./Admin');
+let jwt = require('jsonwebtoken');
+let router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,31 +17,27 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // POST
 /////////////////////////////
 
-// CREATE A NEW ADMIN IN THE DATABASE
+// CREATES A NEW ADMIN IN THE DATABASE
 router.post('/', verifyToken, function (request, response) {
-  var adminAuth = {
-    'username': request.body.username,
-    'password': request.body.password,
-    'email': request.body.email
-  }
+    let adminAuth = {
+        'username': request.body.username,
+        'password': request.body.password,
+        'email': request.body.email
+     };
 
-jwt.verify(request.token, 'secretkey', function(error,authData){
-  if(error) {
-    response.sendStatus(403);
-  } else {
-    Admin.create(adminAuth,function (error, admin) {
-            if (error) return response.status(500).send("There was a problem adding "+ admin.username +" to the NUber Network.");
-      });
-  }
+    jwt.verify(request.token, 'secretkey', function(error,authData){
+        if(error) {
+            response.sendStatus(403);
+        } else {
+            Admin.create(adminAuth,function (error, admin) {
+                if (error) return response.status(500).send("There was a problem adding "+ admin.username +" to the NUber Network.");
+            });
+        }
 
-  jwt.sign({adminAuth: adminAuth}, 'secretadminkey', function(err,token){
-    response.json({
-      adminAuth: adminAuth,
-      token: token
-    })
-  })
-});
-
+        jwt.sign({adminAuth: adminAuth}, 'secretadminkey', function(err,token){
+            response.json({adminAuth: adminAuth, token: token});
+        });
+    });
 });
 
 //////////////////////////////
@@ -81,8 +77,6 @@ router.delete('/:id', verifyToken, function(request,response){
       });
     }
   });
-
-
 });
 
 //////////////////////////////
@@ -98,7 +92,7 @@ router.put('/:id', function(request,response){
     });
 });
 
-//verifyToken
+// VERIFY TOKEN
 function verifyToken(request,response,next) {
   //get the auth Header value
   const bearerHeader = request.headers['authorization'];
@@ -109,10 +103,8 @@ function verifyToken(request,response,next) {
     next();
 
   } else {
-
     response.sendStatus(403);
   }
-
 }
 
 module.exports = router;
