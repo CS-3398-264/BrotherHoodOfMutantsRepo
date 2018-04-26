@@ -7,7 +7,7 @@ npm install express --save
 npm install mongoose --save
 npm install jsonwebtoken --save
 npm install enum --save
-npm install @google/maps --save
+npm install google-distance --save
 
 /////////////////////////////////////////////////////////////
 // URLS & Functionality

@@ -4,10 +4,10 @@
   "description": "NUber is a rideshare application helping connect users with great local drivers.",
   "main": "app.js",
   "dependencies": {
-    "@google/maps": "^0.4.6",
     "body-parser": "^1.18.2",
     "enum": "^2.5.0",
     "express": "^4.16.3",
+    "google-distance": "^1.0.1",
     "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.0.16",
     "node": "^10.0.0"
