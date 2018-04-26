@@ -3,11 +3,11 @@
 /////////////////////////////////////////////////////////////
 
 npm install node --save
-npm install express --save
-npm install mongoose --save
-npm install jsonwebtoken --save
-npm install enum --save
-npm install google-distance --save
+npm install express --save --save-exact
+npm install mongoose --save --save-exact
+npm install jsonwebtoken --save --save-exact
+npm install enum --save --save-exact
+npm install google-distance --save --save-exact
 
 /////////////////////////////////////////////////////////////
 // URLS & Functionality
