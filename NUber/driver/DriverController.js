@@ -37,7 +37,7 @@ router.post('/', verifyToken, function (request, response) {
                 driverType: request.body.driverType
             },
             function (error, driver) {
-                if (error) return response.status(500).send("Theere was a problem adding the driver to the NUber Network.");
+                if (error) return response.status(500).send("There was a problem adding the driver to the NUber Network.");
                 response.status(200).send(driver);
             });
           }
