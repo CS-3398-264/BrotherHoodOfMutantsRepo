@@ -67,67 +67,44 @@ router.get('/:id', function (request, response) {
 //RETURNS LIST OF ALL DRIVERS IN SPECIFIED RANGE
 // URL:
 router.get('/:id/range', function(request, response){
-/*    var userID = request.params.userid;
-    var range = request.query.distance;
-    var driversInRange = [];
+var userID = request.params.id;
+    var desiredDistance = request.query.distance;
 
     User.findById(userID).exec()
         .then(function (user) {
             var person = [];
             return Driver.find({}).exec()
                 .then(function (drivers) {
-                    console.log(user.latitude, user.longitude)
                     return [user, drivers];
                 });
         })
         .then(function (person) {
-            console.log(person[0].latitude, person[0].longitude);
             let customerLatitude = person[0].latitude;
             let customerLongitude = person[0].longitude;
-            console.log(customerLatitude);
-            console.log(customerLongitude);
-            var i;
-            for (i = 0;i < person[1].length;i++) {
+            let drivers = person[1];
+            var driversInRange = [];
 
-                var driverLatitude = person[1][i].latitude;
-                //console.log(driverLatitude);
-                var driverLongitude = person[1][i].longitude;
-                //console.log(driverLongitude);
-                var d = getDistanceFromLatLonInMiles(customerLatitude, customerLongitude, driverLatitude, driverLongitude);
-                //console.log(d);
-                if(d <= range) driversInRange.push(person[1][i]);
-                console.log(driversInRange.toString());
 
-                //if (persons[1]) return response.status(500).send("There was a problem retrieving the list of NUber drivers within range.");
-                if (!person[1]) return response.status(404).send("No NUber drivers could be found within "+range+" miles of specified location.")
-                response.status(200).send(driversInRange);
+            for(driver in drivers){
+                var driverLatitude = driver.latitude;
+                var driverLongitude = driver.longitude;
+
+                var distance = getDistanceFromLatLonInMiles(customerLatitude, customerLongitude, driverLatitude, driverLongitude);
+
+                if(distance <= desiredDistance){
+                    driversInRange.push(driver);
+                }
             }
-
+             ///// DEBUG
+            // for (driver1 in driversInRange){
+            //     console.log(driver1.id)
+            // }
+            response.status(200).send(driversInRange);
         }).then(undefined, function(error){
         console.log(error)
 
-    });*/
-
-    var userID = request.params.userid;
-    var range = request.query.distance;
-    User.findById(userID).exec().then(
-        function (user) {
-            var person = [];
-            return Driver.find({},function(error,drivers){
-                if (error) return response.status(500).send("There was a problem retrieving the list of all NUber drivers.");
-            }).exec().then(
-                function (driver) {
-                    return [user, driver];
-                });
-        }).then(function (person) {
-
-        console.log(person[0].longitude);
-        console.log(person[0].latitude);
-        console.log(person[1].longitude);
-        console.log(person[1].latitude);
-    }).then(undefined, function (error) {
-        console.log(error);
     });
+
 });
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
     var R = 3595; // Radius of the earth in mi
