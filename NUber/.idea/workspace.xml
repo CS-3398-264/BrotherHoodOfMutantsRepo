@@ -32,8 +32,8 @@
       <file leaf-file-name="DriverController.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/driver/DriverController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="98" column="38" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
+            <state relative-caret-position="286">
+              <caret line="102" column="13" selection-start-line="102" selection-start-column="13" selection-end-line="102" selection-end-column="13" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -181,12 +181,20 @@
       <workItem from="1524701795192" duration="69000" />
       <workItem from="1524701894850" duration="45000" />
       <workItem from="1524701994784" duration="2105000" />
-      <workItem from="1524704869158" duration="1273000" />
+      <workItem from="1524704869158" duration="2903000" />
     </task>
+    <task id="LOCAL-00001" summary="Version 3,2&#10;Author: Alexander Maxwell&#10;Description:&#10;&#10;- Broken Code for Range.&#10;&#10;Design/Layout © 2018 by The Brotherhood of Mutants&#10;All rights reserved. Any reproduction or use of this content beyond what&#10;was expressly stated or agreed upon prioto use is strictly prohibited&#10;without explicit consent from the original creator. Content is defined as&#10;any work of art, design, source code, or idea.">
+      <created>1524706319861</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1524706319861</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8256000" />
+    <option name="totallyTimeSpent" value="9886000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="691" extended-state="6" />
@@ -216,6 +224,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Version 3,2&#10;Author: Alexander Maxwell&#10;Description:&#10;&#10;- Broken Code for Range.&#10;&#10;Design/Layout © 2018 by The Brotherhood of Mutants&#10;All rights reserved. Any reproduction or use of this content beyond what&#10;was expressly stated or agreed upon prioto use is strictly prohibited&#10;without explicit consent from the original creator. Content is defined as&#10;any work of art, design, source code, or idea." />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 3,2&#10;Author: Alexander Maxwell&#10;Description:&#10;&#10;- Broken Code for Range.&#10;&#10;Design/Layout © 2018 by The Brotherhood of Mutants&#10;All rights reserved. Any reproduction or use of this content beyond what&#10;was expressly stated or agreed upon prioto use is strictly prohibited&#10;without explicit consent from the original creator. Content is defined as&#10;any work of art, design, source code, or idea." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -488,8 +500,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/driver/DriverController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="98" column="38" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
+        <state relative-caret-position="286">
+          <caret line="102" column="13" selection-start-line="102" selection-start-column="13" selection-end-line="102" selection-end-column="13" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

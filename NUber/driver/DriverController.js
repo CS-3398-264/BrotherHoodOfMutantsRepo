@@ -84,8 +84,8 @@ var userID = request.params.id;
             let drivers = person[1];
             var driversInRange = [];
 
+            drivers.forEach(function (driver) {
 
-            for(driver in drivers){
                 var driverLatitude = driver.latitude;
                 var driverLongitude = driver.longitude;
 
@@ -94,18 +94,17 @@ var userID = request.params.id;
                 if(distance <= desiredDistance){
                     driversInRange.push(driver);
                 }
+            });
+            if(!Array.isArray(driversInRange) || !driversInRange.length){
+                response.status(404).send("ERROR! No Drivers Found!")
+            } else {
+                response.status(200).send(driversInRange);
             }
-             ///// DEBUG
-            // for (driver1 in driversInRange){
-            //     console.log(driver1.id)
-            // }
-            response.status(200).send(driversInRange);
         }).then(undefined, function(error){
         console.log(error)
-
     });
-
 });
+
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
     var R = 3595; // Radius of the earth in mi
     var dLat = deg2rad(lat2-lat1);  // deg2rad below
