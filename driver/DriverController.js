@@ -60,7 +60,7 @@ router.get('/', function (request, response) {
 router.get('/:id', function (request, response) {
     Driver.findById(request.params.id, function (error, driver) {
         if (error) return response.status(500).send({error:"There was a problem finding the specified NUber driver."});
-        if (!driver) return response.status(404).send({error:driver.id + " does not match any drivers in the NUber Network."});
+        if (!driver) return response.status(404).send({error:"No matching users in the NUber Network."});
         response.status(200).send(driver);
     });
 });
