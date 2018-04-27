@@ -109,7 +109,7 @@ var userID = request.params.id;
 
                 var distance = getDistanceFromLatLonInMiles(customerLatitude, customerLongitude, driverLatitude, driverLongitude);
 
-                if(distance <= desiredDistance){
+                if(distance <= desiredDistance && driver.available == true){
                     driversInRange.push(driver);
                 }
             });
@@ -189,7 +189,7 @@ router.put('/:id', function(request,response){
     Driver.findByIdAndUpdate(request.params.id, request.body, {new: true}, function(error,driver){
         if(error) return response.status(500).send({error:"There was an error updating the specified NU"});
         if (!driver) return response.status(404).send({error:"No matching users in the NUber Network."});
-        response.status(200).send(driver.id);
+        response.status(200).send({success:"Updated!"});
     });
 });
 
@@ -198,7 +198,7 @@ router.put('/:id/status', function(request,response){
     Driver.findByIdAndUpdate(request.params.id, { available: request.query.available }, {new: true}, function(error,driver){
         if(error) return response.status(500).send();
         if (!driver) return response.status(404);
-        response.status(200).send(driver.id);
+        response.status(200).send({success:"Updated!"});
     });
 });
 
